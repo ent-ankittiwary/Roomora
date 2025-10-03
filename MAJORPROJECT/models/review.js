@@ -13,6 +13,6 @@ const reviewSchema=new Schema({
         default:Date.now
     }
 })
-let review=mongoose.model("review",reviewSchema);
+let Review=mongoose.model("review",reviewSchema);
      //collection name=review(small r) //mongoose automatically makes it plural//creates reviews collection in db// put review comment in it.
-module.exports=review; 
+module.exports=Review; 

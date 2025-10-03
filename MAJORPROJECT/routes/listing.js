@@ -2,7 +2,7 @@ const express=require("express");
 const router=express.Router();
 const wrapAsync = require("../utils/wrapAsync.js"); //for flow of errors in async functions ,better than try catch
 const ExpressError = require("../utils/ExpressError.js");
-const {listingSchemavalidate,reviewSchemavalidate} =require("../schema.js");
+const {listingSchemavalidate} =require("../schema.js");
 const Listing = require("../models/listing.js");
 
 //for custom error message
@@ -85,15 +85,8 @@ router.get(
   "/:id",
   wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id).populate("review");
     res.render("listing/show.ejs", { listing });
   })
 );
-
-
-
-
-
-
-
 module.exports=router;

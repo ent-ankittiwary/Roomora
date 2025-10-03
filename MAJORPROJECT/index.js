@@ -2,17 +2,16 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
-
 const ejsmate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js"); //for custom error message
-const wrapAsync = require("./utils/wrapAsync.js"); //for flow of errors in async functions ,better than try catch
+// const wrapAsync = require("./utils/wrapAsync.js"); //for flow of errors in async functions ,better than try catch
 const methodOverride = require("method-override");
-const {listingSchemavalidate,reviewSchemavalidate} =require("./schema.js");
+const {listingSchemavalidate,reviewSchemavalidate} = require("./schema.js");
 const { error } = require("console");
-const review=require("./models/review.js");
-const Listing = require("./models/listing.js");
-const listings=require("./routes/listing.js");
-const reviews=require("./routes/listing.js")
+// const Listing = require("./models/listing.js"); //importing listings collections
+const listings=require("./routes/listing.js"); //importing listing.js of routes
+// const Review=require("./models/review.js")// importing reviews collections
+const review=require("./routes/review.js");//importing reviews.js of listing
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -36,11 +35,21 @@ app.get("/", (req, res) => {
   res.send("Hi! I am route");
 });
 
-//TO VALIDATE ALL SCHEMAS 
+//TO SERVERSIDE VALIDATE ALL SCHEMAS 
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchemavalidate.validate(req.body);
+  if (error) {
+    const errMsg = error.details.map(el => el.message).join(", ");
+    throw new ExpressError(errMsg, 400); // message first, then status
+  } else {
+    next();
+  }
+};
 
 
-app.use("/listings",listings);
-app.use("/listings/:id.reviews",reviews);
+app.use("/listings",listings); //To handle all /listings request by routes file lisitng.js
+app.use("/listings/:id/reviews",review);
+// app.use("/listings/:id/reviews",review);
 // INDEX
 
 //ADDING REVIEW TO DATABASE (one listing can have many reviews)
@@ -54,6 +63,11 @@ app.use("/listings/:id.reviews",reviews);
 // );
 //DELETE REVIEW ROUTE
 
+//REview route
+
+
+//Delete Review Route
+
 
 
 
@@ -61,7 +75,9 @@ app.use("/listings/:id.reviews",reviews);
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
-
+// app.all('*',(req,res,next)=>{
+//   next(new ExpressError(404,"Page not Found"));
+// });
 // global error handler
 app.use((err, req, res, next) => {
   const { statusCode= 500, message="Something went wrong"} = err;

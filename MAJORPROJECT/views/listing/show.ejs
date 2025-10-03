@@ -30,9 +30,9 @@
     </div>
     <hr> <!--review component starts after this-->
 
-
+    <!--review component-->
   <div class="row">
-    <h4>Leave Review</h4>
+    <h4>Leave a Review</h4>
     <form  action="/listings/<%=listing._id%>/reviews" method="POST" novalidate class="mb-3 mt-3 needs-validation">
         <div>
             <label for="rating" class="form-label">Rating</label>
@@ -41,19 +41,19 @@
         <div class="mb-3 mt-3">
             <label for="comment" class="form label">Comments</label>
             <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
-            <div class="invalid-feedback">Please enter your comments.</div>
+            <div class="invalid-feedback">Please add some comments for Review.</div>
         </div>
         <br>
          <button class="btn btn-dark">Submit</button>
     </form>
     <hr> 
 
-    <p><b>All Reviews</b></p>
+    <p><b>All Reviews</b></p> 
     <div class="row">
-            <% for(review of listing.reviews){%>
+            <% for(review of listing.review){%>
         <div class="card col-5 ms-3 mb-5">
         <div class="card-body">
-            <h5 class="card-title">Jane Doe</h5>
+            <!-- <h5 class="card-title">Jane Doe</h5> -->
             <p class="card-text"><%=review.comment%></p>
             <p class="card-text">Rating: <%='⭐'.repeat(review.rating) %></p>  
             <form
@@ -61,9 +61,8 @@
              <button class="btn btn-dark mb-3">Edit Review</button>
             </form>
             <form
-            class="mb-3 btn btn-dark"
             method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
-            Delete Review
+            <button class="mb-3 btn btn-dark">Delete Review</button>
             </form>
         </div>
     </div>
