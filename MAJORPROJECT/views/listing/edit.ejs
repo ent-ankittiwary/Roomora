@@ -1,0 +1,51 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new Listing</title>
+</head> -->
+<% layout("/layouts/boilerplate.ejs") -%>
+<div class="row mt-4 ">
+    <div class="col-8 offset-3">  <!--This brings the content in center-->
+   <h3 class="text-center">Edit Your Listing</h3>
+    <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation">
+        <div class="mb-3 col-md-10">
+        <label for="title" class="form-label">Title</label>
+        <input name="listing[title]" value="<%= listing.title%>" type="text" class="form-control" required/>
+        <div class="invalid-feedback">Title is invalid</div>   <!--Anyname[feild] becomes object key when express parses the form-->
+        </div>
+    <div class="mb-3 col-md-10">
+        <label for="title" class="form-label">Description</label>
+        <textarea name="listing[description]" class="form-control" required><%=listing.description%> </textarea>
+        <div class="invalid-feedback">description is invalid</div>
+    </div>
+    <div class="mb-3 col-md-10">
+            <label for="image" class="form-label">Image URL</label>
+            <input name="listing[image][url]" value="<%=listing.image.url%>" type="string" class="form-control"/>
+            <div class="invalid-feedback">image is invalid</div>
+    </div>
+        <!--Price and country must be in a single line-->
+        <div class="row ">
+            <div class="mb-3 col-md-5">
+            <label for="price" class="form-label">Price</label>
+        <input name="listing[price]" value="<%=listing.price%>" type="number" class="form-control" required/>
+        <div class="invalid-feedback">Price is invalid</div>
+        </div>
+
+        <div class="mb-3 col-md-5">
+            <label for="country" class="form-label">Country</label>
+        <input name="listing[country]" value="<%=listing.country%>" type="text" class="form-control" required/>
+        <div class="invalid-feedback">Country is invalid</div>
+        </div>
+        </div>
+        <div class="mb-3 col-md-10">
+        <label for="location" class="form-label">Location</label>
+        <input name="listing[location]" value="<%=listing.location%>" type="text" class="form-control" />
+        <div class="invalid-feedback">Location is invalid</div>
+        </div>
+        <button class="btn btn-dark mt-3 mb-3">Edit</button>   <!--Can use differenct class with same css property definded-->
+    </form>
+    </div>
+</div>
+
